@@ -40,6 +40,7 @@ export const TransactionsTable = styled.table`
       flex-wrap: wrap;
       width: 100%;
       border-radius: 6px;
+      margin-bottom: 0.5rem;
     }
     td {
       padding: 1.25rem 1.5rem;
