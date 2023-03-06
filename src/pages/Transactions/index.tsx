@@ -1,37 +1,20 @@
 import { TagSimple } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 
 import { Header } from '../../components/Header'
 import { Summary } from '../../components/Summary'
-import { api } from '../../services/api'
-import { formatCurrency } from '../../utils/formatCurrency'
 import { SearchForm } from './components/SearchForm'
+import { formatCurrency } from '../../utils/formatCurrency'
+import { TransactionsContext } from '../../contexts/TransactionsContext'
 import {
   PriceHighlight,
   TransactionsContainer,
   TransactionsTable,
 } from './styles'
-
-interface Transaction {
-  id: number
-  description: string
-  type: 'income' | 'outcome'
-  category: string
-  price: number
-  createdAt: string
-}
+import { formatDate } from '../../utils/formatDate'
 
 export function Transactions() {
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-
-  async function loadTransactions() {
-    const data = await api.get<Transaction[]>('transactions')
-    setTransactions(data)
-  }
-
-  useEffect(() => {
-    loadTransactions()
-  }, [])
+  const { transactions } = useContext(TransactionsContext)
 
   return (
     <div>
@@ -49,13 +32,14 @@ export function Transactions() {
                 <td>{item.description}</td>
                 <td>
                   <PriceHighlight variant={item.type}>
+                    {item.type === 'outcome' && '- '}
                     {formatCurrency(item.price)}
                   </PriceHighlight>
                 </td>
                 <td>
-                  <TagSimple size={16} /> Alimentação
+                  <TagSimple size={16} /> {item.category}
                 </td>
-                <td>13/04/2022</td>
+                <td>{formatDate(item.createdAt)}</td>
               </tr>
             ))}
           </tbody>
