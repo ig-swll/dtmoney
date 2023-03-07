@@ -3,6 +3,7 @@ import { Portal, Title } from '@radix-ui/react-dialog'
 import { ArrowCircleDown, ArrowCircleUp, Spinner, X } from 'phosphor-react'
 import { Controller, useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { api } from '../../services/api'
 
 import {
   Content,
@@ -25,6 +26,7 @@ export function TransactionModal() {
   const {
     register,
     handleSubmit,
+    reset,
     control,
     formState: { isSubmitting },
   } = useForm<NewTransactionFormInputs>({
@@ -35,9 +37,9 @@ export function TransactionModal() {
   })
 
   async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    const { category, description, price, type } = data
 
-    console.log(data)
+    reset()
   }
 
   return (

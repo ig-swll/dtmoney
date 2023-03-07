@@ -22,10 +22,22 @@ export function TransactionsProvider(props: PropsWithChildren) {
 
   async function fetchTransactions(queryParams?: { [key: string]: string }) {
     console.log(queryParams)
-    const data = await api.get<Transaction[]>('transactions', {
-      queryParams: queryParams ?? undefined,
+    const response = await api.get<Transaction[]>('/transactions', {
+      params: {
+        _sort: 'createdAt',
+        _order: 'desc',
+        ...queryParams,
+      },
     })
-    setTransactions(data)
+
+    setTransactions(response.data)
+  }
+
+  async function addTransaction(data: Omit<Transaction, 'createdAt' | 'id'>) {
+    await api.post('/transactions', {
+      ...data,
+      createdAt: new Date().toISOString(),
+    })
   }
 
   useEffect(() => {
