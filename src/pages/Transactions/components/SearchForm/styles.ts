@@ -1,4 +1,24 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const LoadingSpin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`
+const LoadingOpacity = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+`
 
 export const SearchFormContainer = styled.form`
   display: flex;
@@ -36,10 +56,19 @@ export const SearchFormContainer = styled.form`
     transition: background-color 0.15s ease-in, border-color 0.15s ease-in,
       color 0.15s ease-in;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: ${({ theme }) => theme['green-500']};
       border-color: ${({ theme }) => theme['green-500']};
       color: ${({ theme }) => theme.white};
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: progress;
+      svg {
+        animation: ${LoadingSpin} 1.1s linear infinite,
+          ${LoadingOpacity} 1s infinite;
+      }
     }
 
     @media screen and (max-width: 425px) {

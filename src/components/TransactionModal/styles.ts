@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import * as RadioGroup from '@radix-ui/react-radio-group'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const Overlay = styled(Dialog.Overlay)`
   position: fixed;
@@ -10,6 +10,26 @@ export const Overlay = styled(Dialog.Overlay)`
 
   background: #00000075;
   backdrop-filter: blur(0.25rem);
+`
+
+const LoadingSpin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`
+const LoadingOpacity = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 `
 
 export const Content = styled(Dialog.Content)`
@@ -51,9 +71,22 @@ export const Content = styled(Dialog.Content)`
       margin-top: 1.5rem;
       cursor: pointer;
       transition: background-color 0.1s;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
 
-      &:hover {
+      &:hover:not(:disabled) {
         background: ${({ theme }) => theme['green-700']};
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: progress;
+        svg {
+          animation: ${LoadingSpin} 1.1s linear infinite,
+            ${LoadingOpacity} 1s infinite;
+        }
       }
     }
   }
