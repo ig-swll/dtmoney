@@ -1,5 +1,5 @@
 import { TagSimple } from 'phosphor-react'
-import { useContext } from 'react'
+import { useContextSelector } from 'use-context-selector'
 
 import { Header } from '../../components/Header'
 import { Summary } from '../../components/Summary'
@@ -14,7 +14,10 @@ import {
 import { formatDate } from '../../utils/formatDate'
 
 export function Transactions() {
-  const { transactions } = useContext(TransactionsContext)
+  const transactions = useContextSelector(
+    TransactionsContext,
+    (ctx) => ctx.transactions,
+  )
 
   return (
     <div>
